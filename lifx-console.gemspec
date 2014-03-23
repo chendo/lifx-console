@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["gems+lifx-console@github.com"]
   spec.summary       = %q{Pry-enabled REPL for interacting with LIFX devices.}
   spec.description   = %q{Pry-enabled REPL for interacting with LIFX devices. Contains a bunch of useful utilities, like visual device identification.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/chendo/lifx-console"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "lifx", ">= 0.6"
+  spec.add_dependency "lifx", "~> 0.4"
   spec.add_dependency "pry"
   spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "rake"
