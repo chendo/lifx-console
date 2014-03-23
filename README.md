@@ -13,9 +13,16 @@ $ gem install lifx-console
 
 ## Usage
 
+```bash
 $ lifx-console
+```
 
-
+Print the label of lights being visually identified
+```bash
+[1] pry(#<LIFX::Client>)> while light = identify
+[1] pry(#<LIFX::Client>)*   puts light.label
+[1] pry(#<LIFX::Client>)* end
+```
 ## Contributing
 
 1. Fork it ( http://github.com/<my-github-username>/lifx-console/fork )

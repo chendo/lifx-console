@@ -25,7 +25,7 @@ module LIFX
     end
 
     module Commands
-      def identify(candidates = lights.to_a)
+      def identify(candidates = lights)
         Identify.new.run(candidates)
       end
     end

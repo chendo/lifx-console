@@ -2,4 +2,5 @@
 $LOAD_PATH << File.join(File.dirname(__FILE__), "..", "lib")
 require 'lifx/console'
 
+LIFX::Config.allowed_transports = [:udp] if ENV["UDP_ONLY"]
 LIFX::Console.start

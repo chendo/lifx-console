@@ -1,15 +1,25 @@
+require 'abbrev'
+
 module LIFX
   class Console
     class Identify
       COLORS = {
         'red' => LIFX::Color.red.with_brightness(0.7),
         'green' => LIFX::Color.green.with_brightness(0.7),
-        'blue' => LIFX::Color.blue.with_brightness(0.7)
+        'blue' => LIFX::Color.blue.with_brightness(0.7),
+        'yellow' => LIFX::Color.yellow.with_brightness(0.7),
+        'purple' => LIFX::Color.purple.with_brightness(0.7),
       }
 
       def run(lights)
         candidates = lights.to_a.shuffle
         mapping = {}
+
+        if lights.respond_to?(:set_color)
+          lights.set_color(LIFX::Color.white, duration: 0)
+        else
+          lights.each { |l| l.set_color(LIFX::Color.white, duration: 0) }
+        end
 
         while candidates.count > 1
           puts "Searching through #{candidates.count} devices..."
@@ -19,20 +29,23 @@ module LIFX
               mapping[color_name] = partitions[index]
               next if partitions[index].nil?
               partitions[index].each do |l|
-                l.pulse(color, cycles: 2)
+                l.pulse(color, period: 10, duty_cycle: 1.0)
               end
             end
-          puts "What color did the light blink? (#{COLORS.keys.join(', ')}. Press enter to retry)"
+          puts "What color did the light change to? (#{COLORS.keys.join(', ')}. Press enter to retry)"
           resp = gets.strip
-          if mapping.has_key?(resp)
-            candidates = mapping[resp]
+          abbrev = Abbrev.abbrev(COLORS.keys)
+          if mapping.has_key?(abbrev[resp])
+            candidates = mapping[abbrev[resp]]
           else
             puts "Color not found. Pulsing again."
           end
         end
 
         if candidates.count == 1
-          puts "Light identified: #{candidates.first}"
+          result = candidates.first
+          puts "Light identified: #{result}"
+          result.pulse(LIFX::Color.green, cycles: 3, period: 1)
           return candidates.first
         else
           puts "No lights matched."
